@@ -514,13 +514,13 @@ void getloadcommands(FILE *file, off_t offset, struct mach_header_64 *header, st
 }
 
 void getdylibversions(struct mach_header_64 *header, struct dylib_command *dylib_cmd, String& currentVersion, String& compatabilityVersion) noexcept {
-    currentVersion = String("%u.%u.%u", (swap(header->magic, dylib_cmd->dylib.current_version) >> 16), ((swap(header->magic, dylib_cmd->dylib.current_version) >> 8) & 0xff), (swap(header->magic, dylib_cmd->dylib.current_version) & 0xff));
-    compatabilityVersion = String("%u.%u.%u", (swap(header->magic, dylib_cmd->dylib.compatibility_version) >> 16), ((swap(header->magic, dylib_cmd->dylib.compatibility_version) >> 8) & 0xff), (swap(header->magic, dylib_cmd->dylib.compatibility_version) & 0xff));
+	currentVersion = String::Fmt("%u.%u.%u", (swap(header->magic, dylib_cmd->dylib.current_version) >> 16), ((swap(header->magic, dylib_cmd->dylib.current_version) >> 8) & 0xff), (swap(header->magic, dylib_cmd->dylib.current_version) & 0xff));
+	compatabilityVersion = String::Fmt("%u.%u.%u", (swap(header->magic, dylib_cmd->dylib.compatibility_version) >> 16), ((swap(header->magic, dylib_cmd->dylib.compatibility_version) >> 8) & 0xff), (swap(header->magic, dylib_cmd->dylib.compatibility_version) & 0xff));
 }
 
 String getuuid(uint8_t *uuid) noexcept {
-    String uuidString = String("%.2X%.2X%.2X%.2X%.2X%.2X%.2X%.2X%.2X%.2X%.2X%.2X%.2X%.2X", uuid[0], uuid[1], uuid[2], uuid[3], uuid[4], uuid[5], uuid[6], uuid[7], uuid[8], uuid[9], uuid[10], uuid[11], uuid[12], uuid[13], uuid[14], uuid[15]);
-    return String("%s-%s-%s-%s-Ts", uuidString.substr(0, 8).data(), uuidString.substr(8, 4).data(), uuidString.substr(12, 4).data(), uuidString.substr(16, 4).data(), uuidString.substr(20, 12).data());
+	String uuidString = String::Fmt("%.2X%.2X%.2X%.2X%.2X%.2X%.2X%.2X%.2X%.2X%.2X%.2X%.2X%.2X", uuid[0], uuid[1], uuid[2], uuid[3], uuid[4], uuid[5], uuid[6], uuid[7], uuid[8], uuid[9], uuid[10], uuid[11], uuid[12], uuid[13], uuid[14], uuid[15]);
+	return String::Fmt("%s-%s-%s-%s-Ts", uuidString.substr(0, 8).data(), uuidString.substr(8, 4).data(), uuidString.substr(12, 4).data(), uuidString.substr(16, 4).data(), uuidString.substr(20, 12).data());
 }
 
 std::vector<Symbol> retrievesymbols(FILE *file, off_t offset, struct mach_header_64 *header, struct symtab_command *symtab, bool architecture) noexcept { //architecture boolean just for fancy error message
@@ -609,8 +609,7 @@ std::vector<const NXArchInfo *> parsearchitectures(String str) {
 //TODO: Add native '_String<std::allocator<char>>' support, instead of using proprietary std::string
 String Ask(String question) noexcept {
     std::string input;
-    std::cout << question << ": ";
-    
+	std::cerr << question << ": " << std::flush;
     std::cin >> input;
     return input;
 }
