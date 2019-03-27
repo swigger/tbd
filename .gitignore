@@ -1,4 +1,14 @@
-**/.DS_Store
 project.xcworkspace
-xcuserdata
+**/.DS_Store
+**/xcuserdata/
+
+.vs/
+.vscode/
+
+compile_commands.json
+
 build/
+bin/
+tests/
+
+a.out
